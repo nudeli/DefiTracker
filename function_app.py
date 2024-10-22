@@ -17,12 +17,11 @@ def CheckYields(myTimer: func.TimerRequest) -> None:
         logging.info('The timer is past due!')
 
     logging.info('Python timer trigger function executed.')
-    
+
     #https://studio.zapper.xyz/documentation#tag/Balances
-    # Set your API key and wallet address
     api_key = os.environ['API_KEY']
     address= os.environ['ADDRESS']
-    network= "Ethereum"  # You can change this to another network
+    network= "Ethereum"
 
 
     # Create the encoded credentials once
@@ -31,11 +30,9 @@ def CheckYields(myTimer: func.TimerRequest) -> None:
         "Authorization": f"Basic {encoded_credentials}",
         "accept": "/"
     }
-    
-    # Run the function
+
     get_token_balances(headers,address,network)
 
-# Function to make API requests for a specific network
 def get_token_balances(headers,address,network):
     url = f"https://api.zapper.xyz/v2/balances/apps?addresses%5B%5D={address}&network={network}"
     try:
@@ -46,7 +43,7 @@ def get_token_balances(headers,address,network):
         time.sleep(10)
         
         response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Check if the request was successful
+        response.raise_for_status()
         
         existing_data = retrieve_csv_from_blob()
         data = response.json()
@@ -72,7 +69,7 @@ def get_token_balances(headers,address,network):
         if existing_data is not None:
             updated_df = pd.concat([existing_data, new_df], ignore_index=True)
         else:
-            # If no existing CSV, just use the new data
+
             updated_df = new_df
 
         save_csv_to_blob(updated_df)
@@ -82,11 +79,10 @@ def get_token_balances(headers,address,network):
 
 def retrieve_csv_from_blob():
     try:
-        # Replace with your connection string and container name
+        
         container_name = "defi-tracker"
-        blob_name = "defi-tracker.csv"  # Name of the CSV file in the storage
+        blob_name = "defi-tracker.csv"  
 
-        # Create BlobServiceClient
         blob_service_client = BlobServiceClient.from_connection_string(os.environ['AzureWebJobsStorage'])
         container_client = blob_service_client.get_container_client(container_name)
 
@@ -107,9 +103,9 @@ def retrieve_csv_from_blob():
 
 def save_csv_to_blob(df):
     try:
-        # Replace with your connection string and container name
+
         container_name = "defi-tracker"
-        blob_name = "defi-tracker.csv"  # Name of the CSV file in the storage
+        blob_name = "defi-tracker.csv" 
 
         # Create a BlobServiceClient object
         blob_service_client = BlobServiceClient.from_connection_string(os.environ['AzureWebJobsStorage'])
