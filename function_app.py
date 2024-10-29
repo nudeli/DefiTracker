@@ -194,7 +194,7 @@ def CheckAPYs(myTimer: func.TimerRequest) -> None:
         # Set up the request headers
         headers = {
             'Content-Type': 'application/json',
-            'X-Api-Key': '75ad57b4233940e38e45c2c72e827f9c'  # Replace with your actual API key if required
+            'X-Api-Key': os.environ['API_KEY_DEFI']  # Replace with your actual API key if required
         }
         
         responseChains = requests.post(
