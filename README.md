@@ -1,3 +1,3 @@
 # DefiTracker
 
-Azure function app for tracking defi postions that belong to a specific address
+Azure function app for tracking Defi positions that belong to a specific address
